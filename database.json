@@ -1,0 +1,11 @@
+{
+    "defaultEnv": "dev",
+    "dev": {
+      "host": "localhost",
+      "user": "saahalla",
+      "password" : "sahal07seven",
+      "database": "devcode_db",
+      "driver": "mysql",
+      "multipleStatements": true
+    }
+  }
