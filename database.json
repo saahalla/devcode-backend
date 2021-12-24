@@ -1,11 +1,11 @@
 {
-    "defaultEnv": "dev",
-    "dev": {
-      "host": "localhost",
-      "user": "saahalla",
-      "password" : "sahal07seven",
-      "database": "devcode_db",
-      "driver": "mysql",
-      "multipleStatements": true
-    }
+  "defaultEnv": "dev",
+  "dev": {
+    "host": { "ENV": "MYSQL_HOST" },
+    "user": { "ENV": "MYSQL_USER" },
+    "password": { "ENV": "MYSQL_PASSWORD" },
+    "database": { "ENV": "MYSQL_DBNAME" },
+    "driver": "mysql",
+    "multipleStatements": true
   }
+}
