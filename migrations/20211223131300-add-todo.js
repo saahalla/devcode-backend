@@ -50,6 +50,7 @@ exports.up = function (db) {
       type: 'string',
       length: 255,
       notNull: true,
+      defaultValue: 'very-high',
     },
     create_at: {
       type: 'string',
