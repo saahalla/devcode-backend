@@ -15,7 +15,7 @@ exports.setup = function (options, seedLink) {
 }
 
 exports.up = function (db) {
-  return db.createTable('activity', {
+  return db.createTable('activities', {
     id: {
       type: 'int',
       notNull: true,
@@ -48,7 +48,7 @@ exports.up = function (db) {
 }
 
 exports.down = function (db) {
-  return db.dropTable('activity')
+  return db.dropTable('activities')
 }
 
 exports._meta = {

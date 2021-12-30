@@ -15,7 +15,7 @@ exports.setup = function (options, seedLink) {
 }
 
 exports.up = function (db) {
-  return db.createTable('todo', {
+  return db.createTable('todos', {
     id: {
       type: 'int',
       notNull: true,
@@ -29,7 +29,7 @@ exports.up = function (db) {
       length: 10,
       foreignKey: {
         name: 'activity_group_id',
-        table: 'activity',
+        table: 'activities',
         rules: {
           onDelete: 'CASCADE',
           onUpdate: 'RESTRICT',
@@ -43,8 +43,8 @@ exports.up = function (db) {
       notNull: true,
     },
     is_active: {
-      type: 'boolean',
-      defaultValue: 1,
+      type: 'string',
+      defaultValue: true,
     },
     priority: {
       type: 'string',
@@ -68,7 +68,7 @@ exports.up = function (db) {
 }
 
 exports.down = function (db) {
-  return db.dropTable('todo')
+  return db.dropTable('todos')
 }
 
 exports._meta = {

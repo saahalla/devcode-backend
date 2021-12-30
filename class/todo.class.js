@@ -8,17 +8,17 @@ class Todo {
     let data = []
     if (activity_group_id) {
       data = Db.query(
-        `SELECT * FROM todo WHERE delete_at IS NULL AND activity_group_id = '${activity_group_id}'`,
+        `SELECT * FROM todos WHERE delete_at IS NULL AND activity_group_id = '${activity_group_id}'`,
       )
     } else {
-      data = Db.query('SELECT * FROM todo WHERE delete_at IS NULL')
+      data = Db.query('SELECT * FROM todos WHERE delete_at IS NULL')
     }
     return data
   }
 
   get(id) {
     let data = Db.query(
-      `SELECT * FROM todo WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT * FROM todos WHERE id='${id}' AND delete_at IS NULL`,
     )
     return data
   }
@@ -31,7 +31,7 @@ class Todo {
       insertData.update_at = insertData.create_at
 
       // return insertData
-      let query = await Db.queryData(`INSERT INTO todo SET ?`, insertData)
+      let query = await Db.queryData(`INSERT INTO todos SET ?`, insertData)
 
       console.log(query)
       if (query.affectedRows > 0) {
@@ -52,7 +52,7 @@ class Todo {
     let deletedDate = new Date().toISOString()
 
     let query = await Db.query(
-      `UPDATE todo SET delete_at = '${deletedDate}' WHERE id='${id}'`,
+      `UPDATE todos SET delete_at = '${deletedDate}' WHERE id='${id}'`,
     )
     if (query.affectedRows > 0) {
       return true
@@ -61,10 +61,20 @@ class Todo {
     }
   }
 
-  async update(id, title) {
-    let query = await Db.query(
-      `UPDATE todo SET title = '${title}' WHERE id = '${id}'`,
-    )
+  async update(id, title = null, is_active = null) {
+    let dbquery = ''
+    if (title !== null && title !== undefined && title !== '') {
+      dbquery = `title = '${title}'`
+    }
+
+    if (is_active !== null && is_active !== undefined && is_active !== '') {
+      dbquery =
+        dbquery === ''
+          ? `is_active = ${is_active}`
+          : `${dbquery} AND is_active = ${is_active}`
+    }
+
+    let query = await Db.query(`UPDATE todos SET ${dbquery} WHERE id = '${id}'`)
     if (query.affectedRows > 0) {
       let data = await this.get(id)
       return data[0]

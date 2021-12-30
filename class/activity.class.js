@@ -3,13 +3,13 @@ let Db = new __mysql()
 
 class Activity {
   getAll() {
-    let data = Db.query('SELECT * FROM activity WHERE delete_at IS NULL')
+    let data = Db.query('SELECT * FROM activities WHERE delete_at IS NULL')
     return data
   }
 
   get(id) {
     let data = Db.query(
-      `SELECT * FROM activity WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT * FROM activities WHERE id='${id}' AND delete_at IS NULL`,
     )
     return data
   }
@@ -20,7 +20,7 @@ class Activity {
     insertData.update_at = insertData.create_at
 
     // return insertData
-    let query = await Db.queryData(`INSERT INTO activity SET ?`, insertData)
+    let query = await Db.queryData(`INSERT INTO activities SET ?`, insertData)
 
     console.log(query)
     if (query.affectedRows > 0) {
@@ -38,7 +38,7 @@ class Activity {
     let deletedDate = new Date().toISOString()
 
     let query = await Db.query(
-      `UPDATE activity SET delete_at = '${deletedDate}' WHERE id='${id}'`,
+      `UPDATE activities SET delete_at = '${deletedDate}' WHERE id='${id}'`,
     )
     if (query.affectedRows > 0) {
       return true
@@ -49,7 +49,7 @@ class Activity {
 
   async update(id, title) {
     let query = await Db.query(
-      `UPDATE activity SET title = '${title}' WHERE id = '${id}'`,
+      `UPDATE activities SET title = '${title}' WHERE id = '${id}'`,
     )
     if (query.affectedRows > 0) {
       let data = await this.get(id)

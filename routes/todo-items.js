@@ -42,17 +42,27 @@ router.get('/:todoItemId', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   let title = req.body.title
+  let activity_group_id = req.body.activity_group_id
   if (!title || title === null || title === undefined || title === '') {
     res.status(400).send({
       status: 'Bad Request',
       message: 'title cannot be null',
       data: {},
     })
+  } else if (!activity_group_id) {
+    res.status(400).send({
+      status: 'Bad Request',
+      message: 'activity_group_id cannot be null',
+      data: {},
+    })
   } else {
     let data = await Todo.add(req.body)
-    console.log({ data })
+    console.log({ datatset: data })
+    if (data.is_active == '1') {
+      data.is_active = true
+    }
     if (data) {
-      res.send({
+      res.status(201).send({
         status: 'Success',
         message: 'Success',
         data: data,
@@ -95,13 +105,17 @@ router.delete('/:todoItemId', async function (req, res, next) {
 })
 
 router.patch('/:todoItemId', async function (req, res, next) {
+  console.log({
+    body: req.body,
+  })
   let todoItemId = req.params.todoItemId
   let title = req.body.title
+  let is_active = req.body.is_active
   let data = await Todo.get(todoItemId)
 
   if (data.length > 0) {
-    let query = await Todo.update(todoItemId, title)
-    res.send({
+    let query = await Todo.update(todoItemId, title, is_active)
+    res.status(200).send({
       status: 'Success',
       message: 'Success',
       data: query,

@@ -45,7 +45,10 @@ router.post('/', async function (req, res, next) {
     })
   } else {
     let data = await Activity.add(req.body)
-    res.send({
+    // if (data.is_active == 1) {
+    data.is_active = true
+    // }
+    res.status(201).send({
       status: 'Success',
       message: 'Success',
       data: data,
