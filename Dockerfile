@@ -13,6 +13,8 @@ COPY package*.json ./
 #   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN npm install 
+
+RUN npm install -g pm2
 # RUN npm install -g db-migrate
 # If you are building your code for production
 # RUN npm ci --only=production
