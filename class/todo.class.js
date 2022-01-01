@@ -33,11 +33,11 @@ class Todo {
       // return insertData
       let query = await Db.queryData(`INSERT INTO todos SET ?`, insertData)
 
-      console.log(query)
+      // console.log(query)
       if (query.affectedRows > 0) {
         let id = query.insertId
         let data = await this.get(id)
-        console.log('data', data[0])
+        // console.log('data', data[0])
 
         return data[0]
       } else {

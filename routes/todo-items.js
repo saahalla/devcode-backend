@@ -12,7 +12,7 @@ router.get('/', async function (req, res, next) {
   } else {
     data = await Todo.getAll()
   }
-  console.log(data)
+  // console.log(data)
 
   res.send({
     status: 'Success',
@@ -57,7 +57,7 @@ router.post('/', async function (req, res, next) {
     })
   } else {
     let data = await Todo.add(req.body)
-    console.log({ datatset: data })
+    // console.log({ datatset: data })
     if (data.is_active == '1') {
       data.is_active = true
     }
@@ -105,9 +105,9 @@ router.delete('/:todoItemId', async function (req, res, next) {
 })
 
 router.patch('/:todoItemId', async function (req, res, next) {
-  console.log({
-    body: req.body,
-  })
+  // console.log({
+  //   body: req.body,
+  // })
   let todoItemId = req.params.todoItemId
   let title = req.body.title
   let is_active = req.body.is_active

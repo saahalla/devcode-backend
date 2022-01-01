@@ -6,7 +6,7 @@ let Activity = new __activity()
 /* Get All Activity */
 router.get('/', async function (req, res, next) {
   let data = await Activity.getAll()
-  console.log(data)
+  // console.log(data)
 
   res.send({
     status: 'Success',

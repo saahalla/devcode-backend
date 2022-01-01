@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "db-migrate up && nodemon ./bin/www",
     "db-migrate-up": "db-migrate up",
     "db-migrate-down": "db-migrate down"
   },

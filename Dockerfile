@@ -1,4 +1,4 @@
-FROM node:stretch-slim
+FROM node:17.3-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -23,7 +23,7 @@ COPY . .
 
 # RUN service mysql restart
 
-RUN db-migrate up
+# RUN db-migrate up
 
 EXPOSE 3030
 
