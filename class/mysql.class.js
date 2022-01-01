@@ -9,10 +9,8 @@ class DbMysql {
 
   async connect() {
     if (this.connection) {
-      // console.log('already connect')
       return this.connection
     } else {
-      // console.log('create new pool')
       const pool = await this.createPool()
       return this.connection
     }
@@ -25,22 +23,19 @@ class DbMysql {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DBNAME,
     })
-    // console.log("pool", pool)
+
     this.connection = pool
-    // return pool
   }
   async query(query) {
     const pool = await this.connect()
     const [row, fields] = await pool.query(query)
-    // console.log({ query })
-    // pool.end()
+
     return row
   }
   async queryData(query, data) {
-    // console.log({ query, data })
     const pool = await this.connect()
     const [row, fields] = await pool.query(query, data)
-    // pool.end()
+
     return row
   }
 }

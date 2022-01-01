@@ -30,14 +30,11 @@ class Todo {
       insertData.create_at = new Date().toISOString()
       insertData.update_at = insertData.create_at
 
-      // return insertData
       let query = await Db.queryData(`INSERT INTO todos SET ?`, insertData)
 
-      // console.log(query)
       if (query.affectedRows > 0) {
         let id = query.insertId
         let data = await this.get(id)
-        // console.log('data', data[0])
 
         return data[0]
       } else {
