@@ -1,11 +1,18 @@
 let __todo = require('../class/todo.class')
 let Todo = new __todo()
+const NodeCache = require('node-cache')
+const cache = new NodeCache({ stdTTL: 15 })
 
 let getAllTodo = async function (req, res, next) {
   let activity_group_id = req.query.activity_group_id
   let data
   if (activity_group_id) {
-    data = await Todo.getAll(activity_group_id)
+    if (cache.has('activityGroup' + activity_group_id)) {
+      data = cache.get('activityGroup' + activity_group_id)
+    } else {
+      data = await Todo.getAll(activity_group_id)
+      cache.set('activityGroup' + activity_group_id, data)
+    }
   } else {
     data = await Todo.getAll()
   }
@@ -21,18 +28,27 @@ let getTodo = async function (req, res, next) {
   let todoItemId = req.params.todoItemId
   let data = await Todo.get(todoItemId)
 
-  if (data.length > 0) {
+  if (cache.has('getTodo' + todoItemId)) {
     res.send({
       status: 'Success',
       message: 'Success',
-      data: data[0],
+      data: cache.get('getTodo' + todoItemId),
     })
   } else {
-    res.status(404).send({
-      status: 'Not Found',
-      message: `Todo with ID ${todoItemId} Not Found`,
-      data: {},
-    })
+    if (data.length > 0) {
+      cache.set('getTodo' + todoItemId, data[0])
+      res.send({
+        status: 'Success',
+        message: 'Success',
+        data: data[0],
+      })
+    } else {
+      res.status(404).send({
+        status: 'Not Found',
+        message: `Todo with ID ${todoItemId} Not Found`,
+        data: {},
+      })
+    }
   }
 }
 

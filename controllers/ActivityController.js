@@ -1,5 +1,7 @@
 let __activity = require('../class/activity.class')
 let Activity = new __activity()
+const NodeCache = require('node-cache')
+const cache = new NodeCache({ stdTTL: 15 })
 
 let getAllActivity = async function (req, res, next) {
   let data = await Activity.getAll()
@@ -15,18 +17,28 @@ let getActivity = async function (req, res, next) {
   let activityId = req.params.activityId
   let data = await Activity.get(activityId)
 
-  if (data.length > 0) {
+  // console.log('cache getActivity ===', cache.get('getActivity' + activityId))
+  if (cache.has('getActivity' + activityId)) {
     res.send({
       status: 'Success',
       message: 'Success',
-      data: data[0],
+      data: cache.get('getActivity' + activityId),
     })
   } else {
-    res.status(404).send({
-      status: 'Not Found',
-      message: `Activity with ID ${activityId} Not Found`,
-      data: {},
-    })
+    if (data.length > 0) {
+      cache.set('getActivity' + activityId, data[0])
+      res.send({
+        status: 'Success',
+        message: 'Success',
+        data: data[0],
+      })
+    } else {
+      res.status(404).send({
+        status: 'Not Found',
+        message: `Activity with ID ${activityId} Not Found`,
+        data: {},
+      })
+    }
   }
 }
 
