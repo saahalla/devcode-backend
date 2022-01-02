@@ -11,7 +11,7 @@ let getAllTodo = async function (req, res, next) {
       data = cache.get('activityGroup' + activity_group_id)
     } else {
       data = await Todo.getAll(activity_group_id)
-      cache.set('activityGroup' + activity_group_id, data)
+      cache.set('activityGroup' + activity_group_id, data, 30)
     }
   } else {
     data = await Todo.getAll()
@@ -36,7 +36,7 @@ let getTodo = async function (req, res, next) {
     })
   } else {
     if (data.length > 0) {
-      cache.set('getTodo' + todoItemId, data[0])
+      cache.set('getTodo' + todoItemId, data[0], 30)
       res.send({
         status: 'Success',
         message: 'Success',

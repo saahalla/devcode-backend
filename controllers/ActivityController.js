@@ -26,7 +26,7 @@ let getActivity = async function (req, res, next) {
     })
   } else {
     if (data.length > 0) {
-      cache.set('getActivity' + activityId, data[0])
+      cache.set('getActivity' + activityId, data[0], 30)
       res.send({
         status: 'Success',
         message: 'Success',
