@@ -4,7 +4,7 @@ let __activity = require('./activity.class')
 let Activity = new __activity()
 
 class Todo {
-  getAll(activity_group_id = null) {
+  async getAll(activity_group_id = null) {
     let data = []
     if (activity_group_id) {
       data = Db.query(
@@ -16,7 +16,7 @@ class Todo {
     return data
   }
 
-  get(id) {
+  async get(id) {
     let data = Db.query(
       `SELECT * FROM todos WHERE id='${id}' AND delete_at IS NULL`,
     )

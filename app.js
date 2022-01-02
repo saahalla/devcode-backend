@@ -1,15 +1,15 @@
-var express = require('express')
-var Env = require('dotenv').config()
-var path = require('path')
-var cookieParser = require('cookie-parser')
-// var logger = require('morgan')
-var compression = require('compression')
+let express = require('express')
+let Env = require('dotenv').config()
+let path = require('path')
+let cookieParser = require('cookie-parser')
+// let logger = require('morgan')
+let compression = require('compression')
+let cors = require('cors')
+let dbmigrate = require('db-migrate')
 
-var indexRouter = require('./routes/index')
+let indexRouter = require('./routes/index')
 let activityGroupsRouter = require('./routes/activity-groups')
 let todoItemsRouter = require('./routes/todo-items')
-var cors = require('cors')
-let dbmigrate = require('db-migrate')
 
 let dbm = dbmigrate.getInstance(true)
 dbm.sync('20211223150835').then(function () {
@@ -17,7 +17,7 @@ dbm.sync('20211223150835').then(function () {
   return
 })
 
-var app = express()
+let app = express()
 app.use(compression())
 app.use(cors())
 // app.use(logger('dev'))
