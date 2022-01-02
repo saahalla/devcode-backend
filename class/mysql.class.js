@@ -1,5 +1,5 @@
 // https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server
-var mysql = require('mysql2/promise')
+let mysql = require('mysql2/promise')
 
 /* https://www.npmjs.com/package/mysql2#using-promise-wrapper */
 class DbMysql {
