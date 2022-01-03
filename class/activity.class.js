@@ -3,13 +3,15 @@ let Db = new __mysql()
 
 class Activity {
   async getAll() {
-    let data = Db.query('SELECT * FROM activities WHERE delete_at IS NULL')
+    let data = Db.query(
+      'SELECT id, email, title, delete_at FROM activities WHERE delete_at IS NULL',
+    )
     return data
   }
 
   async get(id) {
     let data = Db.query(
-      `SELECT * FROM activities WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT id, email, title, delete_at FROM activities WHERE id='${id}' AND delete_at IS NULL`,
     )
     return data
   }

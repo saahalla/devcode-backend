@@ -8,17 +8,19 @@ class Todo {
     let data = []
     if (activity_group_id) {
       data = Db.query(
-        `SELECT * FROM todos WHERE delete_at IS NULL AND activity_group_id = '${activity_group_id}'`,
+        `SELECT id, activity_group_id, title, is_active, priority, delete_at FROM todos WHERE delete_at IS NULL AND activity_group_id = '${activity_group_id}'`,
       )
     } else {
-      data = Db.query('SELECT * FROM todos WHERE delete_at IS NULL')
+      data = Db.query(
+        'SELECT id, activity_group_id, title, is_active, priority, delete_at FROM todos WHERE delete_at IS NULL',
+      )
     }
     return data
   }
 
   async get(id) {
     let data = Db.query(
-      `SELECT * FROM todos WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT id, activity_group_id, title, is_active, priority, delete_at FROM todos WHERE id='${id}' AND delete_at IS NULL`,
     )
     return data
   }

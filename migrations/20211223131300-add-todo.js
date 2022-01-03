@@ -17,16 +17,14 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   return db.createTable('todos', {
     id: {
-      type: 'int',
+      type: 'smallint',
       notNull: true,
       primaryKey: true,
       autoIncrement: true,
-      length: 10,
     },
     activity_group_id: {
-      type: 'int',
+      type: 'smallint',
       notNull: true,
-      length: 10,
       foreignKey: {
         name: 'activity_group_id',
         table: 'activities',
@@ -38,31 +36,31 @@ exports.up = function (db) {
       },
     },
     title: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 64,
       notNull: true,
     },
     is_active: {
-      type: 'string',
+      type: 'boolean',
       defaultValue: true,
     },
     priority: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 16,
       notNull: true,
       defaultValue: 'very-high',
     },
     create_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     update_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     delete_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
   })
 }

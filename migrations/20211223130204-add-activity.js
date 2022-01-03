@@ -17,32 +17,31 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   return db.createTable('activities', {
     id: {
-      type: 'int',
+      type: 'smallint',
       notNull: true,
       primaryKey: true,
       autoIncrement: true,
-      length: 10,
     },
     email: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 128,
     },
     title: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 128,
       notNull: true,
     },
     create_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     update_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     delete_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
   })
 }
