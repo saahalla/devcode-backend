@@ -11,7 +11,7 @@ class Activity {
 
   async get(id) {
     let data = Db.query(
-      `SELECT id, email, title, delete_at FROM activities WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT id, email, title, delete_at FROM activities WHERE id='${id}' AND delete_at IS NULL LIMIT 1`,
     )
     return data
   }

@@ -20,7 +20,7 @@ class Todo {
 
   async get(id) {
     let data = Db.query(
-      `SELECT id, activity_group_id, title, is_active, priority, delete_at FROM todos WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT id, activity_group_id, title, is_active, priority, delete_at FROM todos WHERE id='${id}' AND delete_at IS NULL LIMIT 1`,
     )
     return data
   }

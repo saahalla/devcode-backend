@@ -15,8 +15,8 @@ class DbMysql {
       return this.connection
     }
   }
-  createPool() {
-    const pool = mysql.createPool({
+  async createPool() {
+    const pool = await mysql.createPool({
       connectionLimit: 10,
       host: process.env.MYSQL_HOST,
       user: process.env.MYSQL_USER,
@@ -27,16 +27,24 @@ class DbMysql {
     this.connection = pool
   }
   async query(query) {
-    const pool = await this.connect()
-    const [row, fields] = await pool.query(query)
+    return new Promise(async (resolve, reject) => {
+      const pool = await this.connect()
+      const [row, fields] = await pool.query(query)
 
-    return row
+      if (row) {
+        resolve(row)
+      }
+    })
   }
   async queryData(query, data) {
-    const pool = await this.connect()
-    const [row, fields] = await pool.query(query, data)
-
-    return row
+    return new Promise(async (resolve, reject) => {
+      const pool = await this.connect()
+      const [row, fields] = await pool.query(query, data)
+      if (row) {
+        resolve(row)
+      }
+      // return row
+    })
   }
 }
 

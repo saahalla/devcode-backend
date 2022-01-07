@@ -7,36 +7,28 @@ let getAllTodo = async function (req, res, next) {
   let activity_group_id = req.query.activity_group_id
   let data
   if (activity_group_id) {
-    if (cache.has('activityGroup' + activity_group_id)) {
-      data = cache.get('activityGroup' + activity_group_id)
-    } else {
-      data = await Todo.getAll(activity_group_id)
-      cache.set('activityGroup' + activity_group_id, data, 30)
-    }
+    data = Todo.getAll(activity_group_id).then((data) => {
+      res.send({
+        status: 'Success',
+        message: 'Success',
+        data: data,
+      })
+    })
   } else {
-    data = await Todo.getAll()
+    data = Todo.getAll().then((data) => {
+      res.send({
+        status: 'Success',
+        message: 'Success',
+        data: [],
+      })
+    })
   }
-
-  res.send({
-    status: 'Success',
-    message: 'Success',
-    data: data,
-  })
 }
 
 let getTodo = async function (req, res, next) {
   let todoItemId = req.params.todoItemId
-  let data = await Todo.get(todoItemId)
-
-  if (cache.has('getTodo' + todoItemId)) {
-    res.send({
-      status: 'Success',
-      message: 'Success',
-      data: cache.get('getTodo' + todoItemId),
-    })
-  } else {
+  let data = Todo.get(todoItemId).then((data) => {
     if (data.length > 0) {
-      cache.set('getTodo' + todoItemId, data[0], 30)
       res.send({
         status: 'Success',
         message: 'Success',
@@ -49,7 +41,7 @@ let getTodo = async function (req, res, next) {
         data: {},
       })
     }
-  }
+  })
 }
 
 let createTodo = async function (req, res, next) {
@@ -68,36 +60,44 @@ let createTodo = async function (req, res, next) {
       data: {},
     })
   } else {
-    let data = await Todo.add(req.body)
-    if (data.is_active == '1') {
-      data.is_active = true
-    }
-    if (data) {
-      res.status(201).send({
-        status: 'Success',
-        message: 'Success',
-        data: data,
-      })
-    } else {
-      res.status(404).send({
-        status: 'Not Found',
-        message: `Activity with activity_group_id ${req.body.activity_group_id} Not Found`,
-      })
-    }
+    let data = Todo.add(req.body).then((data) => {
+      if (data) {
+        if (data.is_active == '1') {
+          data.is_active = true
+        }
+        res.status(201).send({
+          status: 'Success',
+          message: 'Success',
+          data: data,
+        })
+      } else {
+        res.status(404).send({
+          status: 'Not Found',
+          message: `Activity with activity_group_id ${req.body.activity_group_id} Not Found`,
+        })
+      }
+    })
   }
 }
 
 let deleteTodo = async function (req, res, next) {
   let todoItemId = req.params.todoItemId
-  let data = await Todo.get(todoItemId)
-
-  if (data.length > 0) {
-    let query = await Todo.delete(todoItemId)
-    if (query) {
-      res.send({
-        status: 'Success',
-        message: 'Success',
-        data: {},
+  let data = Todo.get(todoItemId).then((data) => {
+    if (data.length > 0) {
+      let query = Todo.delete(todoItemId).then((data) => {
+        // if (query) {
+        res.send({
+          status: 'Success',
+          message: 'Success',
+          data: {},
+        })
+        // } else {
+        //   res.status(404).send({
+        //     status: 'Not Found',
+        //     message: `Todo with ID ${todoItemId} Not Found`,
+        //     data: {},
+        //   })
+        // }
       })
     } else {
       res.status(404).send({
@@ -106,13 +106,7 @@ let deleteTodo = async function (req, res, next) {
         data: {},
       })
     }
-  } else {
-    res.status(404).send({
-      status: 'Not Found',
-      message: `Todo with ID ${todoItemId} Not Found`,
-      data: {},
-    })
-  }
+  })
 }
 
 let updateTodo = async function (req, res, next) {
@@ -122,11 +116,12 @@ let updateTodo = async function (req, res, next) {
   let data = await Todo.get(todoItemId)
 
   if (data.length > 0) {
-    let query = await Todo.update(todoItemId, title, is_active)
-    res.status(200).send({
-      status: 'Success',
-      message: 'Success',
-      data: query,
+    let query = Todo.update(todoItemId, title, is_active).then((data) => {
+      res.status(200).send({
+        status: 'Success',
+        message: 'Success',
+        data: data,
+      })
     })
   } else {
     res.status(404).send({
