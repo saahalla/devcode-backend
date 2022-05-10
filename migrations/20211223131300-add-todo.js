@@ -1,8 +1,8 @@
 'use strict'
 
-var dbm
-var type
-var seed
+let dbm
+let type
+let seed
 
 /**
  * We receive the dbmigrate dependency from dbmigrate initially.
@@ -15,21 +15,19 @@ exports.setup = function (options, seedLink) {
 }
 
 exports.up = function (db) {
-  return db.createTable('todo', {
+  return db.createTable('todos', {
     id: {
-      type: 'int',
+      type: 'smallint',
       notNull: true,
       primaryKey: true,
       autoIncrement: true,
-      length: 10,
     },
     activity_group_id: {
-      type: 'int',
+      type: 'smallint',
       notNull: true,
-      length: 10,
       foreignKey: {
         name: 'activity_group_id',
-        table: 'activity',
+        table: 'activities',
         rules: {
           onDelete: 'CASCADE',
           onUpdate: 'RESTRICT',
@@ -38,37 +36,37 @@ exports.up = function (db) {
       },
     },
     title: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 64,
       notNull: true,
     },
     is_active: {
       type: 'boolean',
-      defaultValue: 1,
+      defaultValue: true,
     },
     priority: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 16,
       notNull: true,
       defaultValue: 'very-high',
     },
     create_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     update_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     delete_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
   })
 }
 
 exports.down = function (db) {
-  return db.dropTable('todo')
+  return db.dropTable('todos')
 }
 
 exports._meta = {

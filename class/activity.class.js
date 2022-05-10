@@ -2,14 +2,16 @@ let __mysql = require('./mysql.class')
 let Db = new __mysql()
 
 class Activity {
-  getAll() {
-    let data = Db.query('SELECT * FROM activity WHERE delete_at IS NULL')
+  async getAll() {
+    let data = Db.query(
+      'SELECT id, email, title, delete_at FROM activities WHERE delete_at IS NULL',
+    )
     return data
   }
 
-  get(id) {
+  async get(id) {
     let data = Db.query(
-      `SELECT * FROM activity WHERE id='${id}' AND delete_at IS NULL`,
+      `SELECT id, email, title, delete_at FROM activities WHERE id='${id}' AND delete_at IS NULL LIMIT 1`,
     )
     return data
   }
@@ -20,13 +22,11 @@ class Activity {
     insertData.update_at = insertData.create_at
 
     // return insertData
-    let query = await Db.queryData(`INSERT INTO activity SET ?`, insertData)
+    let query = await Db.queryData(`INSERT INTO activities SET ?`, insertData)
 
-    console.log(query)
     if (query.affectedRows > 0) {
       let id = query.insertId
       let data = await this.get(id)
-      console.log('data', data[0])
 
       return data[0]
     } else {
@@ -38,7 +38,7 @@ class Activity {
     let deletedDate = new Date().toISOString()
 
     let query = await Db.query(
-      `UPDATE activity SET delete_at = '${deletedDate}' WHERE id='${id}'`,
+      `UPDATE activities SET delete_at = '${deletedDate}' WHERE id='${id}'`,
     )
     if (query.affectedRows > 0) {
       return true
@@ -49,7 +49,7 @@ class Activity {
 
   async update(id, title) {
     let query = await Db.query(
-      `UPDATE activity SET title = '${title}' WHERE id = '${id}'`,
+      `UPDATE activities SET title = '${title}' WHERE id = '${id}'`,
     )
     if (query.affectedRows > 0) {
       let data = await this.get(id)

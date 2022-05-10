@@ -1,8 +1,8 @@
 'use strict'
 
-var dbm
-var type
-var seed
+let dbm
+let type
+let seed
 
 /**
  * We receive the dbmigrate dependency from dbmigrate initially.
@@ -15,40 +15,39 @@ exports.setup = function (options, seedLink) {
 }
 
 exports.up = function (db) {
-  return db.createTable('activity', {
+  return db.createTable('activities', {
     id: {
-      type: 'int',
+      type: 'smallint',
       notNull: true,
       primaryKey: true,
       autoIncrement: true,
-      length: 10,
     },
     email: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 128,
     },
     title: {
-      type: 'string',
-      length: 255,
+      type: 'char',
+      length: 128,
       notNull: true,
     },
     create_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     update_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
     delete_at: {
-      type: 'string',
-      length: 64,
+      type: 'char',
+      length: 32,
     },
   })
 }
 
 exports.down = function (db) {
-  return db.dropTable('activity')
+  return db.dropTable('activities')
 }
 
 exports._meta = {
